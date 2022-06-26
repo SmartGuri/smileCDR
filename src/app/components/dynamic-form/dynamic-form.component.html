@@ -1,0 +1,36 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div *ngFor="let item of jsonData?.item">
+        <label>{{ item.text }}  &nbsp;</label> &nbsp;
+        <input *ngIf="['text','date'].includes(item.type)" [type]="item.type" [formControlName]="item.linkId" />
+
+        <span *ngIf="['boolean'].includes(item.type)">
+            <input type="radio" [formControlName]="item.linkId" value="True" />
+            True
+            <input type="radio" [formControlName]="item.linkId" value="False" />
+            False
+        </span>
+
+        <select *ngIf="item.type == 'choice' " [formControlName]="item.linkId">
+            <option>--Select one--</option>
+            <option *ngFor="let opt of item.option">
+                {{opt.valueCoding.display}}
+            </option>
+        </select>
+
+        <textarea *ngIf="item.type === 'string'" [formControlName]="item.linkId"></textarea>
+    </div><br/>
+    <button class="btn btn-primary" type="submit">Submit</button>&nbsp;
+    <button type="reset" class="btn btn-secondary" (click)="onReset()">Reset</button>
+</form>
+<div class="results-box" *ngIf="resultBox">
+    <h4>RESULT</h4>
+    <div *ngFor="let r of resultArr">
+        <span> {{r.ques}} : <b>{{r.ans}}</b></span><br/>
+    </div>
+</div>
+<div class="error-box" *ngIf="errorBox">
+    <h4>Please provide Answers to following questions: </h4>
+    <div *ngFor="let r of errorArr">
+        <span style="color:red;"> {{r}}</span><br/>
+    </div>
+</div>
